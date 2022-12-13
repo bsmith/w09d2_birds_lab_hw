@@ -41,22 +41,36 @@ const createRouter = function (collection) {
             .then(({insertedId}) => {
                 /* two approaches here: just stuff the id into newObject, or do a fetch: maybe a redirect to the SHOW route?  Maybe a 201 with a Location header? */
                 console.log("created", insertedId);
-                res.json({...newObject, _id: insertedId});
+                // res.json({...newObject, _id: insertedId});
+                return collection.findOne({ _id: insertedId })
             })
+            .then((doc) => res.json(doc))
             .catch(handleError);
     });
 
     /* UPDATE */
     router.put('/:id', (req, res) => {
         const objId = new ObjectId(req.params.id);
-        const newObject = req.body;
-        throw new Error('stuff');
+        const updatedObject = req.body;
+        collection
+            .updateOne(
+                { _id: objId },
+                { $set: updatedObject }
+            )
+            .then(result => res.json(result))
+            .catch(handleError)
     });
 
     /* DESTROY */
     router.delete('/:id', (req, res) => {
-        const objId = new ObjectId(req.param.id);
-        throw new Error('stuff');
+        const objId = new ObjectId(req.params.id);
+        collection
+            .deleteOne({ _id: objId })
+            .then(result => {
+                console.log(result);
+                res.json(result)
+            })
+            .catch(handleError)
     });
 
     return router;
