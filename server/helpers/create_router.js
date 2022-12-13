@@ -1,6 +1,6 @@
-const express = require('express');
+import { Router } from 'express';
 /* NB. this isn't ObjectID as I accidentally updated to the new mongodb driver */
-const { ObjectId } = require('mongodb');
+import { ObjectId } from 'mongodb';
 
 const handleError = (err) => {
     console.error(err);
@@ -10,7 +10,7 @@ const handleError = (err) => {
 
 const createRouter = function (collection) {
     /* Setup CRUD routes */
-    const router = express.Router();
+    const router = Router();
 
     /* INDEX */
     router.get('/', (req, res) => {
@@ -76,4 +76,4 @@ const createRouter = function (collection) {
     return router;
 };
 
-module.exports = createRouter;
+export default createRouter;

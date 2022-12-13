@@ -1,14 +1,14 @@
-const express = require('express');
-const morgan = require('morgan');
-const cors = require('cors');
+import express, { json } from 'express';
+import morgan from 'morgan';
+import cors from 'cors';
+import { MongoClient } from 'mongodb';
+
+import createRouter from './helpers/create_router.js';
 
 const app = express();
 app.use(morgan('combined'));
 app.use(cors());
-app.use(express.json());
-
-const MongoClient = require('mongodb').MongoClient;
-const createRouter = require('./helpers/create_router.js');
+app.use(json());
 
 MongoClient.connect('mongodb://127.0.0.1:27017', { useUnifiedTopology: true })
   .then((client) => {
